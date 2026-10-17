@@ -183,7 +183,7 @@ else:
             st.session_state.page = "examenes"; st.rerun()
         if st.button("🩺 Consultas", use_container_width=True, type="primary" if st.session_state.page == "consultas" else "secondary"):
             st.session_state.page = "consultas"; st.rerun()
-        if st.button("🧾 Pedidos", use_container_width=True, type="primary" if st.session_state.page == "pedidos" else "secondary"):
+        if st.button(" Pedidos", use_container_width=True, type="primary" if st.session_state.page == "pedidos" else "secondary"):
             st.session_state.page = "pedidos"; st.rerun()
         if st.button(" Inventario", use_container_width=True, type="primary" if st.session_state.page == "inventario" else "secondary"):
             st.session_state.page = "inventario"; st.rerun()
@@ -224,7 +224,7 @@ else:
     # ═══════════════════════════════════════════════════════
     elif st.session_state.page == "pacientes":
         st.title("👤 Gestión de Pacientes")
-        tab1, tab2, tab3 = st.tabs(["➕ Nuevo Paciente", " Listado", "🔍 Buscar"])
+        tab1, tab2, tab3 = st.tabs(["➕ Nuevo Paciente", " Listado", " Buscar"])
         with tab1:
             st.subheader("Registrar Nuevo Paciente")
             if st.button(" Limpiar Formulario", key="limpiar_form_btn"):
@@ -243,7 +243,7 @@ else:
                     representante_seleccion = st.selectbox("Selecciona el representante o registra uno nuevo:", representante_opciones, key=f"rep_select_{st.session_state.form_counter}")
                     if representante_seleccion == " Registrar nuevo representante":
                         with st.form(f"nuevo_representante_{st.session_state.form_counter}"):
-                            st.markdown("#### 📝 Datos del Representante")
+                            st.markdown("####  Datos del Representante")
                             col1, col2 = st.columns(2)
                             with col1:
                                 rep_nombre = st.text_input("Nombre(s) *", key=f"rep_nom_{st.session_state.form_counter}")
@@ -295,7 +295,7 @@ else:
                     if st.button("👁️ Ver Datos Completos", use_container_width=True, key=f"btn_ver_{paciente[0]}"):
                         st.session_state.ver_paciente_id = paciente[0]; st.session_state.page = "ver_paciente"; st.rerun()
                 with col_edit:
-                    if st.button("✏️ Editar Paciente", use_container_width=True, key=f"btn_edit_{paciente[0]}"):
+                    if st.button("️ Editar Paciente", use_container_width=True, key=f"btn_edit_{paciente[0]}"):
                         st.session_state.editar_paciente_id = paciente[0]; st.session_state.page = "editar_paciente"; st.rerun()
                 st.markdown("---")
             st.markdown("### 📝 Datos del Paciente")
@@ -341,7 +341,7 @@ else:
                             if not ciudades_df.empty:
                                 ciudad_sel = st.selectbox("🏙️ Ciudad/Parroquia", ["Seleccionar..."] + ciudades_df['nombre'].tolist(), key=f"pac_ciu_{st.session_state.form_counter}")
                     else: st.info(f"ℹ️ No hay municipios registrados para {estado_sel}.")
-                direccion = st.text_area("📍 Dirección (calle, número, urbanización)", key=f"pac_dir_{st.session_state.form_counter}")
+                direccion = st.text_area(" Dirección (calle, número, urbanización)", key=f"pac_dir_{st.session_state.form_counter}")
                 notas = st.text_area("📝 Notas adicionales", key=f"pac_notas_{st.session_state.form_counter}")
                 parentesco = ""
                 if es_menor:
@@ -394,7 +394,7 @@ else:
                 st.markdown("---")
                 st.subheader("🗑️ Eliminar Paciente")
                 paciente_a_eliminar = st.selectbox("Selecciona el paciente a eliminar:", [f"{row['apellidos']} {row['nombre']} (Cédula: {row['cedula'] or 'N/A'})" for _, row in df.iterrows()], key="select_eliminar")
-                if paciente_a_eliminar and st.button("🗑️ Verificar y Eliminar", use_container_width=True, key="btn_verificar_eliminar"):
+                if paciente_a_eliminar and st.button("️ Verificar y Eliminar", use_container_width=True, key="btn_verificar_eliminar"):
                     paciente_id = int(df[df['apellidos'] + ' ' + df['nombre'] == paciente_a_eliminar.split(' (Cédula:')[0].strip()]['id'].values[0])
                     historial = verificar_paciente_con_historial(paciente_id)
                     if historial['tiene_historial']:
@@ -414,7 +414,7 @@ else:
                                     st.success("✅ Paciente eliminado correctamente"); st.rerun()
                                 except Exception as e: st.error(f"❌ Error al eliminar: {e}")
                         with col_can:
-                            if st.button("❌ Cancelar", use_container_width=True, key="cancelar_eliminar"): st.rerun()
+                            if st.button(" Cancelar", use_container_width=True, key="cancelar_eliminar"): st.rerun()
             else: st.info("📭 No hay pacientes registrados aún.")
         with tab3:
             st.subheader("🔍 Buscar Paciente")
@@ -442,7 +442,7 @@ else:
                 else: st.info(f"📋 Mostrando todos los pacientes ({len(df)})")
                 df_display = df.copy()
                 df_display['sexo'] = df_display['sexo'].map({'F': '♀️ F', 'M': '♂️ M'}).fillna('')
-                df_display['usa_lentes'] = df_display['usa_lentes'].map({True: '👓 Sí', False: '❌ No', None: ''})
+                df_display['usa_lentes'] = df_display['usa_lentes'].map({True: ' Sí', False: '❌ No', None: ''})
                 df_display['edad'] = df_display['fecha_nacimiento'].apply(lambda x: f"{calcular_edad(x)} años" if pd.notna(x) else '')
                 evento = st.dataframe(df_display[['cedula', 'nombre', 'apellidos', 'sexo', 'edad', 'empresa', 'usa_lentes', 'telefono', 'estado', 'municipio']],
                                       use_container_width=True, height=400, on_select="rerun", selection_mode="single-row", key="tabla_pacientes_click")
@@ -505,7 +505,7 @@ else:
         else:
             st.error("No hay paciente seleccionado"); st.session_state.page = "pacientes"; st.rerun()
 
-    # ═══════════════════════════════════════════════════════
+    # ══════════════════════════════════════════════════════
     # EDITAR PACIENTE
     # ═══════════════════════════════════════════════════════
     elif st.session_state.page == "editar_paciente":
@@ -610,7 +610,7 @@ else:
                                 st.success(f"✅ Paciente **{nombre} {apellidos}** actualizado"); st.balloons()
                                 del st.session_state.editar_paciente_id; st.session_state.page = "pacientes"; st.rerun()
                             except Exception as e:
-                                st.error(f"❌ Ya existe otro paciente con la cédula **{cedula}**" if 'uq_pacientes_cedula' in str(e) else f"❌ Error: {e}")
+                                st.error(f" Ya existe otro paciente con la cédula **{cedula}**" if 'uq_pacientes_cedula' in str(e) else f"❌ Error: {e}")
                         else: st.error("️ Nombre y Apellidos obligatorios")
                     if cancelar:
                         del st.session_state.editar_paciente_id; st.session_state.page = "pacientes"; st.rerun()
@@ -633,7 +633,7 @@ else:
             pac_opts = {f"{r['apellidos']} {r['nombre']} ({r['cedula'] or 'Sin Cédula'})": int(r['id']) for _, r in pac_df.iterrows()}
             paciente_id = pac_opts[st.selectbox("👤 Paciente para Nuevo Examen:", list(pac_opts.keys()), key="sel_pac_examen")]
             st.markdown("---")
-            t1, t2, t3, t4, t5, t6 = st.tabs(["1️⃣ Antecedentes", "2️⃣ Historial", "3️ Preguntas", "4️⃣ Pruebas", "5️⃣ Refracción", "6️⃣ Diagnóstico"])
+            t1, t2, t3, t4, t5, t6 = st.tabs(["1️⃣ Antecedentes", "2️ Historial", "3️ Preguntas", "4️⃣ Pruebas", "5️ Refracción", "6️⃣ Diagnóstico"])
             with t1:
                 st.subheader("1.1 Antecedentes Médicos")
                 c1, c2, c3, c4 = st.columns(4)
@@ -826,17 +826,17 @@ else:
             else: st.info("📭 Sin exámenes registrados para este paciente.")
 
     # ═══════════════════════════════════════════════════════
-    # 🩺 CONSULTAS + LABORATORIO + PDF
+    #  CONSULTAS + LABORATORIO + PDF
     # ═══════════════════════════════════════════════════════
     elif st.session_state.page == "consultas":
-        st.title("🩺 Control de Consultas y Envío a Laboratorio")
+        st.title(" Control de Consultas y Envío a Laboratorio")
         conn = get_connection()
         pac_df = pd.read_sql("SELECT id, cedula, nombre, apellidos, sexo, telefono, fecha_nacimiento FROM pacientes ORDER BY apellidos, nombre", conn); conn.close()
         if pac_df.empty:
-            st.warning("⚠️ Debes registrar un paciente primero."); st.stop()
+            st.warning("️ Debes registrar un paciente primero."); st.stop()
         pac_opts = {f"{r['apellidos']} {r['nombre']} (V-{r['cedula'] or 'S/C'})": int(r['id']) for _, r in pac_df.iterrows()}
-        paciente_id = pac_opts[st.selectbox("👤 Paciente:", list(pac_opts.keys()), key="con_pac_sel")]
-        tab_con, tab_pdf = st.tabs(["🩺 Consulta", "📄 Generar PDF"])
+        paciente_id = pac_opts[st.selectbox(" Paciente:", list(pac_opts.keys()), key="con_pac_sel")]
+        tab_con, tab_pdf = st.tabs(["🩺 Consulta", " Generar PDF"])
         with tab_con:
             c_sum, c_main = st.columns([1, 3])
             with c_sum:
@@ -976,7 +976,7 @@ else:
                 st.markdown("---")
                 b1, b2, b3, b4, b5 = st.columns(5)
                 with b1: guardar_con = st.button("💾 Guardar Consulta", type="primary", use_container_width=True, key="con_guardar")
-                with b2: guardar_grad = st.button("🔬 Guardar Graduación y Lab.", use_container_width=True, key="con_guardar_grad")
+                with b2: guardar_grad = st.button(" Guardar Graduación y Lab.", use_container_width=True, key="con_guardar_grad")
                 with b3: generar_pdf = st.button("📄 Generar PDF", use_container_width=True, key="con_gen_pdf")
                 with b4: envio_pedido = st.button(" Envío a Pedido", use_container_width=True, key="con_envio_ped")
                 with b5: eliminar_con = st.button("🗑️ Eliminar Consulta", use_container_width=True, key="con_eliminar")
@@ -1040,7 +1040,7 @@ else:
                         except Exception as e: st.error(f"❌ Error al guardar graduación: {e}")
                 if generar_pdf:
                     if st.session_state.consulta_id is None:
-                        st.warning("⚠️ Guarda primero la consulta y su graduación")
+                        st.warning("️ Guarda primero la consulta y su graduación")
                     else:
                         conn = get_connection()
                         gpdf = pd.read_sql("""
@@ -1128,7 +1128,7 @@ else:
             """, conn)
             conn.close()
             if pdf_df.empty:
-                st.warning("📭 No hay graduaciones guardadas. Crea una en: Consulta → 🔬 Graduación y Envío a Lab → Guardar Graduación.")
+                st.warning(" No hay graduaciones guardadas. Crea una en: Consulta → 🔬 Graduación y Envío a Lab → Guardar Graduación.")
             else:
                 opc_pdf = [f"Orden {int(r['id']):03d} – {r['paciente']} – {pd.to_datetime(r['fecha_pedido']).strftime('%d/%m/%Y')}" for _, r in pdf_df.iterrows()]
                 sel_pdf = st.selectbox("📋 Selecciona la orden a imprimir:", opc_pdf, key="pdf_sel")
@@ -1170,7 +1170,7 @@ else:
     #  GESTIÓN DE PEDIDOS | VENTAS | COBROS
     # ═══════════════════════════════════════════════════════
     elif st.session_state.page == "pedidos":
-        st.title("🧾 Gestión de Pedidos | Ventas | Cobros")
+        st.title(" Gestión de Pedidos | Ventas | Cobros")
         conn = get_connection()
         ped_df = pd.read_sql("""
             SELECT g.id, g.paciente_id, g.fecha_pedido, g.estado_pedido, g.venta_registrada, g.total_venta,
@@ -1181,7 +1181,7 @@ else:
         """, conn)
         est_df = pd.read_sql("SELECT nombre FROM estados_pedido WHERE activo = TRUE ORDER BY nombre", conn)
         conn.close()
-        tab_ped, tab_cob, tab_ven = st.tabs(["📦 Pedidos y Ventas", "💵 Cobros / Abonos", "💰 Registrar Venta"])
+        tab_ped, tab_cob, tab_ven = st.tabs([" Pedidos y Ventas", "💵 Cobros / Abonos", "💰 Registrar Venta"])
         
         with tab_ped:
             with st.expander("🔎 Filtros", expanded=True):
@@ -1332,7 +1332,7 @@ else:
                         if abono <= 0:
                             st.warning("️ El abono debe ser mayor a 0")
                         elif abono > saldo:
-                            st.warning("⚠️ El abono supera el saldo pendiente")
+                            st.warning("️ El abono supera el saldo pendiente")
                         else:
                             conn = get_connection(); cur = conn.cursor()
                             cur.execute("INSERT INTO cobros (graduacion_id, paciente_id, monto, metodo, nota, fecha_cobro) VALUES (%s,%s,%s,%s,%s,%s)",
@@ -1495,7 +1495,7 @@ else:
                         except Exception as e:
                             st.error(f"❌ Error al guardar venta: {e}")
                 st.markdown("---")
-                st.markdown("#### 🧾 Ventas de este pedido")
+                st.markdown("####  Ventas de este pedido")
                 conn = get_connection()
                 vlist = pd.read_sql("SELECT id, fecha_venta, total, concepto, estado FROM ventas WHERE pedido_id = %s ORDER BY id", conn, params=(pid_pedido,))
                 conn.close()
@@ -1565,7 +1565,7 @@ else:
                 with c1: mat_sel = st.selectbox("🧪 Material del Lente", ["Seleccionar..."] + mat_df['nombre'].tolist(), key="prod_mat")
                 with c2: trat_sel = st.selectbox("✨ Tratamiento", ["Seleccionar..."] + trat_df['nombre'].tolist(), key="prod_trat")
                 with c3: lab_sel = st.selectbox(" Laboratorio", ["Seleccionar..."] + lab_df['nombre'].tolist(), key="prod_lab")
-                with c4: ubi_sel = st.selectbox("📍 Ubicación Principal", ["Seleccionar..."] + ubi_df['nombre'].tolist(), key="prod_ubi")
+                with c4: ubi_sel = st.selectbox(" Ubicación Principal", ["Seleccionar..."] + ubi_df['nombre'].tolist(), key="prod_ubi")
                 c1, c2 = st.columns(2)
                 with c1: prov_sel = st.selectbox("🚚 Proveedor", ["Seleccionar..."] + prov_df['nombre'].tolist(), key="prod_prov")
                 st.markdown("#### 💰 Precio de Venta y Stock")
@@ -1644,7 +1644,7 @@ else:
                 with c2: st.metric("Stock Bajo", len(prod_list[prod_list['stock_actual'] <= prod_list['stock_minimo']]))
                 con_foto = prod_list[prod_list['foto_url'].notna()]
                 if not con_foto.empty:
-                    with st.expander("🖼️ Ver imagen de un producto"):
+                    with st.expander("️ Ver imagen de un producto"):
                         prod_img_sel = st.selectbox("Selecciona producto:", [f"{r['sku']} - {r['nombre']}" for _, r in con_foto.iterrows()], key="prod_img_sel")
                         if prod_img_sel:
                             ruta = con_foto[con_foto['sku'] == prod_img_sel.split(' - ')[0]]['foto_url'].values[0]
@@ -1724,7 +1724,7 @@ else:
             ubi_cons = pd.read_sql("SELECT id, nombre FROM ubicaciones WHERE activo = TRUE ORDER BY nombre", conn)
             conn.close()
             if ubi_cons.empty:
-                st.warning("📭 No hay ubicaciones registradas")
+                st.warning(" No hay ubicaciones registradas")
             else:
                 ubi_sel_cons = st.selectbox("Selecciona la ubicación a consultar:", ubi_cons['nombre'].tolist(), key="cons_ubi_sel")
                 ubi_id_cons = int(ubi_cons[ubi_cons['nombre'] == ubi_sel_cons]['id'].values[0])
@@ -1740,7 +1740,7 @@ else:
                 if stock_ubi.empty:
                     st.info(f"📭 No hay stock en **{ubi_sel_cons}**")
                 else:
-                    stock_ubi['alerta'] = stock_ubi.apply(lambda x: '🔴 Bajo' if x['stock_en_ubicacion'] <= x['stock_minimo'] else '🟢 OK', axis=1)
+                    stock_ubi['alerta'] = stock_ubi.apply(lambda x: ' Bajo' if x['stock_en_ubicacion'] <= x['stock_minimo'] else ' OK', axis=1)
                     st.dataframe(stock_ubi, use_container_width=True, height=400)
                     st.markdown(f"**Total de productos en {ubi_sel_cons}:** {len(stock_ubi)}")
                     st.markdown(f"**Productos con stock bajo:** {len(stock_ubi[stock_ubi['alerta'] == '🔴 Bajo'])}")
@@ -1802,7 +1802,7 @@ else:
             with c5: desc_pct = st.number_input("Desc %", min_value=0.0, max_value=100.0, step=0.5, value=0.0, key="comp_descp")
             with c6:
                 ubi_sel_item = st.selectbox("Ubicación", ["Seleccionar..."] + ubi_df['nombre'].tolist(), key="comp_ubi")
-                if st.button("🛒 Añadir", use_container_width=True, key="comp_add"):
+                if st.button(" Añadir", use_container_width=True, key="comp_add"):
                     if prod_sel and cant_comp > 0 and costo_u > 0:
                         prod_id = int(prods.iloc[[f"{r['sku']} - {r['nombre']}" in prod_sel for _, r in prods.iterrows()].index(True)]['id'])
                         prod_nom = prods.iloc[[f"{r['sku']} - {r['nombre']}" in prod_sel for _, r in prods.iterrows()].index(True)]['nombre'].values[0]
@@ -1841,7 +1841,7 @@ else:
             
             comentario = st.text_area("Comentario", key="comp_coment")
             
-            if st.button("💾 Guardar Factura", type="primary", use_container_width=True, key="comp_guardar"):
+            if st.button(" Guardar Factura", type="primary", use_container_width=True, key="comp_guardar"):
                 if prov_sel == "Seleccionar..." or not carrito:
                     st.error("⚠️ Selecciona proveedor y añade al menos un item")
                 else:
@@ -1891,7 +1891,7 @@ else:
             else: st.info("📭 No hay compras registradas")
 
     # ═══════════════════════════════════════════════════════
-    # 🚚 PROVEEDORES
+    #  PROVEEDORES
     # ═══════════════════════════════════════════════════════
     elif st.session_state.page == "proveedores":
         st.title(" Gestión de Proveedores")
@@ -1929,13 +1929,13 @@ else:
         else: st.info("📭 No hay proveedores registrados.")
 
     # ═══════════════════════════════════════════════════════
-    # ⚙️ CATÁLOGOS
+    # ️ CATÁLOGOS
     # ═══════════════════════════════════════════════════════
     elif st.session_state.page == "catalogos":
         st.title("⚙️ Catálogos del Sistema")
         st.info("💡 Aquí gestionas los valores de todos los combobox del sistema")
         CATALOGOS = {
-            "📌 Estados de Pedido": "estados_pedido", "🔍 Tipos de Lente": "tipos_lente", "🧪 Materiales de Lente": "materiales_lente",
+            " Estados de Pedido": "estados_pedido", " Tipos de Lente": "tipos_lente", "🧪 Materiales de Lente": "materiales_lente",
             "✨ Tratamientos": "tratamientos", "🏭 Laboratorios": "laboratorios", "📍 Ubicaciones": "ubicaciones", "💵 Impuestos": "impuestos",
         }
         USO_EN_PRODUCTOS = {
@@ -1971,7 +1971,7 @@ else:
                         cursor.close(); conn.close(); st.rerun()
                     except Exception as e: st.error(f" Error: {e}")
                 else: st.warning("⚠️ Escribe un valor")
-        st.markdown(f"#### 📋 Valores actuales de: **{cat_sel_mgmt}**")
+        st.markdown(f"####  Valores actuales de: **{cat_sel_mgmt}**")
         conn = get_connection()
         if tabla == "impuestos":
             cat_list = pd.read_sql(f"SELECT id, nombre, tasa FROM {tabla} WHERE activo = TRUE ORDER BY nombre", conn)
