@@ -145,49 +145,35 @@ def generar_pdf_orden(d):
     pdf_bytes = buffer.getvalue(); buffer.close()
     return pdf_bytes
 
-# ══════════════════════════════════════════════════════════
-# LOGIN (versión robusta para la nube)
+# ═══════════════════════════════════════════════════════════
+# LOGIN (VERSIÓN CORREGIDA)
 # ═══════════════════════════════════════════════════════════
 if not st.session_state.logged_in:
     st.title("👓 Óptica SOTMART")
     st.markdown("### Iniciar Sesión")
     actualizar_password_admin()
     
-    # Usamos session_state para capturar los valores de forma confiable
-    if 'login_user' not in st.session_state:
-        st.session_state.login_user = ""
-    if 'login_pass' not in st.session_state:
-        st.session_state.login_pass = ""
-    
-    username = st.text_input("👤 Usuario", value=st.session_state.login_user, placeholder="admin", key="login_username_field")
-    password = st.text_input("🔒 Contraseña", value=st.session_state.login_pass, type="password", key="login_password_field")
-    
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        if st.button("🔐 Ingresar", use_container_width=True, type="primary"):
+    with st.form("login_form", clear_on_submit=False):
+        username = st.text_input("👤 Usuario", placeholder="admin", key="login_username")
+        password = st.text_input("🔒 Contraseña", type="password", key="login_password")
+        submitted = st.form_submit_button("🔐 Ingresar", use_container_width=True, type="primary")
+        
+        if submitted:
             if username and password:
                 user_data = verificar_login(username, password)
                 if user_data:
                     st.session_state.logged_in = True
                     st.session_state.user_data = user_data
-                    st.session_state.login_user = ""
-                    st.session_state.login_pass = ""
                     st.success(f"¡Bienvenido, {user_data['nombre']}!")
                     st.balloons()
                     st.rerun()
                 else:
-                    st.error(" Usuario o contraseña incorrectos")
+                    st.error("❌ Usuario o contraseña incorrectos")
             else:
                 st.warning("⚠️ Ingresa usuario y contraseña")
-    with col2:
-        if st.button("🧹 Limpiar", use_container_width=True):
-            st.session_state.login_user = ""
-            st.session_state.login_pass = ""
-            st.rerun()
     
     st.markdown("---")
     st.info("🔑 **Credenciales por defecto:** Usuario `admin` / Contraseña `admin123`")
-
 # ═══════════════════════════════════════════════════════════
 # SISTEMA PRINCIPAL
 # ═══════════════════════════════════════════════════════════
