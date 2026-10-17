@@ -1,14 +1,13 @@
 import os
 import psycopg2
 
-# ⚠️ IMPORTANTE: La URL de conexión se carga desde una variable de entorno
-# o desde un archivo .env para no subirla a GitHub.
-
 DATABASE_URL = os.environ.get(
     "DATABASE_URL",
-    "postgresql://optica_db_owner:npg_dv3kWmlcnfA2@ep-floral-salad-b7qgint5-pooler.c-13.us-east-1.aws.neon.tech/optica_db?sslmode=require&channel_binding=require"
+    "postgresql://optica_db_owner:npg_xxxxx@ep-floral-salad-b7qgint5-pooler.c-13.us-east-1.aws.neon.tech/optica_db?sslmode=require"
 )
 
+def get_connection():
+    return psycopg2.connect(DATABASE_URL)
 def get_connection():
     """Conecta a la base de datos en Neon.tech (PostgreSQL en la nube)"""
     return psycopg2.connect(DATABASE_URL)
