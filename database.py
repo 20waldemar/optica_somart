@@ -1,16 +1,18 @@
+import os
 import psycopg2
-from psycopg2.extras import RealDictCursor
+
+# ⚠️ IMPORTANTE: La URL de conexión se carga desde una variable de entorno
+# o desde un archivo .env para no subirla a GitHub.
+
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL",
+    "postgresql://optica_db_owner:npg_dv3kWmlcnfA2@ep-floral-salad-b7qgint5-pooler.c-13.us-east-1.aws.neon.tech/optica_db?sslmode=require&channel_binding=require"
+)
 
 def get_connection():
-    """Obtener conexión a PostgreSQL"""
-    return psycopg2.connect(
-        host='localhost',
-        port='5432',
-        database='optica_db',
-        user='postgres',
-        password='Bizwork123'  # <--- CAMBIA ESTO por tu contraseña real de PostgreSQL
-    )
-
+    """Conecta a la base de datos en Neon.tech (PostgreSQL en la nube)"""
+    return psycopg2.connect(DATABASE_URL)
+    
 def get_dict_connection():
     """Obtener conexión con cursor que devuelve diccionarios"""
     conn = get_connection()

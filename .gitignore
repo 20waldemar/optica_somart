@@ -1,7 +1,9 @@
 # Credenciales y archivos sensibles
 conexion_neon.txt
-.env
+fix_password.py
+crear_tablas.sql
 *.env
+.env
 
 # Archivos de Python que no deben subirse
 __pycache__/
@@ -16,5 +18,4 @@ venv/
 .DS_Store
 Thumbs.db
 desktop.ini
-
 
