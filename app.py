@@ -146,26 +146,34 @@ def generar_pdf_orden(d):
     return pdf_bytes
 
 # ═══════════════════════════════════════════════════════════
-# LOGIN
+# LOGIN (VERSIÓN CORREGIDA)
 # ═══════════════════════════════════════════════════════════
 if not st.session_state.logged_in:
     st.title("👓 Óptica SOTMART")
     st.markdown("### Iniciar Sesión")
     actualizar_password_admin()
-    with st.form("login_form"):
-        username = st.text_input(" Usuario", placeholder="admin")
-        password = st.text_input("🔒 Contraseña", type="password")
-        if st.form_submit_button(" Ingresar", use_container_width=True):
+    
+    with st.form("login_form", clear_on_submit=False):
+        username = st.text_input("👤 Usuario", placeholder="admin", key="login_username")
+        password = st.text_input("🔒 Contraseña", type="password", key="login_password")
+        submitted = st.form_submit_button("🔐 Ingresar", use_container_width=True, type="primary")
+        
+        if submitted:
             if username and password:
                 user_data = verificar_login(username, password)
                 if user_data:
-                    st.session_state.logged_in = True; st.session_state.user_data = user_data
-                    st.success(f"¡Bienvenido, {user_data['nombre']}!"); st.balloons(); st.rerun()
-                else: st.error("❌ Usuario o contraseña incorrectos")
-            else: st.warning("⚠️ Ingresa usuario y contraseña")
+                    st.session_state.logged_in = True
+                    st.session_state.user_data = user_data
+                    st.success(f"¡Bienvenido, {user_data['nombre']}!")
+                    st.balloons()
+                    st.rerun()
+                else:
+                    st.error("❌ Usuario o contraseña incorrectos")
+            else:
+                st.warning("⚠️ Ingresa usuario y contraseña")
+    
     st.markdown("---")
     st.info("🔑 **Credenciales por defecto:** Usuario `admin` / Contraseña `admin123`")
-
 # ═══════════════════════════════════════════════════════════
 # SISTEMA PRINCIPAL
 # ═══════════════════════════════════════════════════════════
