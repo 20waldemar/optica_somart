@@ -192,7 +192,7 @@ if not st.session_state.logged_in:
             st.rerun()
 
     st.markdown("---")
-    st.info("🔑 **Credenciales por defecto:** Usuario `admin` / Contraseña `admin123`")
+    st.info("🔑 **Credenciales por defecto:** Usuario `admin` / Contraseña 'admin123'")
 # ═══════════════════════════════════════════════════════════
 # SISTEMA PRINCIPAL
 # ═══════════════════════════════════════════════════════════
