@@ -147,52 +147,23 @@ def generar_pdf_orden(d):
 # ═══════════════════════════════════════════════════════════
 # LOGIN
 # ═══════════════════════════════════════════════════════════
-# ═══════════════════════════════════════════════════════════
-# LOGIN (VERSIÓN DEFINITIVA - SIN st.form)
-# ═══════════════════════════════════════════════════════════
 if not st.session_state.logged_in:
-    st.title("👓 Óptica SOTMART")
+    st.title("👓 Óptica SOTMART")  # ← CAMBIADO AQUÍ
     st.markdown("### Iniciar Sesión")
-    
-    # Inicializar variables en session_state
-    if "login_user_input" not in st.session_state:
-        st.session_state.login_user_input = ""
-    if "login_pass_input" not in st.session_state:
-        st.session_state.login_pass_input = ""
-
-    # Inputs directos (sin form)
-    username = st.text_input("👤 Usuario", value=st.session_state.login_user_input, placeholder="admin", key="user_field")
-    password = st.text_input("🔒 Contraseña", value=st.session_state.login_pass_input, type="password", placeholder="admin123", key="pass_field")
-    
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        if st.button("🔐 Ingresar", use_container_width=True, type="primary"):
-            current_user = st.session_state.user_field
-            current_pass = st.session_state.pass_field
-            
-            if current_user and current_pass:
-                user_data = verificar_login(current_user, current_pass)
+    actualizar_password_admin()
+    with st.form("login_form"):
+        username = st.text_input("👤 Usuario", placeholder="admin")
+        password = st.text_input("🔒 Contraseña", type="password")
+        if st.form_submit_button("🔐 Ingresar", use_container_width=True):
+            if username and password:
+                user_data = verificar_login(username, password)
                 if user_data:
-                    st.session_state.logged_in = True
-                    st.session_state.user_data = user_data
-                    st.session_state.login_user_input = ""
-                    st.session_state.login_pass_input = ""
-                    st.success(f"¡Bienvenido, {user_data['nombre']}!")
-                    st.balloons()
-                    st.rerun()
-                else:
-                    st.error("❌ Usuario o contraseña incorrectos")
-            else:
-                st.warning("⚠️ Ingresa usuario y contraseña")
-    
-    with col2:
-        if st.button("🧹 Limpiar", use_container_width=True):
-            st.session_state.login_user_input = ""
-            st.session_state.login_pass_input = ""
-            st.rerun()
-
+                    st.session_state.logged_in = True; st.session_state.user_data = user_data
+                    st.success(f"¡Bienvenido, {user_data['nombre']}!"); st.balloons(); st.rerun()
+                else: st.error("❌ Usuario o contraseña incorrectos")
+            else: st.warning("⚠️ Ingresa usuario y contraseña")
     st.markdown("---")
-    st.info("🔑 **Credenciales por defecto:** Usuario `admin` / Contraseña 'admin123'")
+    st.info(" **Credenciales por defecto:** Usuario `admin` / Contraseña `admin123`")
 # ═══════════════════════════════════════════════════════════
 # SISTEMA PRINCIPAL
 # ═══════════════════════════════════════════════════════════
