@@ -145,57 +145,43 @@ def generar_pdf_orden(d):
     pdf_bytes = buffer.getvalue(); buffer.close()
     return pdf_bytes
 # ═══════════════════════════════════════════════════════════
-# LOGIN (VERSIÓN DEFINITIVA A PRUEBA DE FALLOS EN LA NUBE)
+# LOGIN (VERSIÓN DEFINITIVA - SIN st.form)
 # ═══════════════════════════════════════════════════════════
 if not st.session_state.logged_in:
-    st.title("👓 Óptica SOTMART")
+    st.title(" Óptica SOTMART")
     st.markdown("### Iniciar Sesión")
     
+    # Intentar actualizar password si es necesario
     try:
         actualizar_password_admin()
     except Exception:
         pass
-        
-    # Inicializamos variables en memoria para que no se borren al hacer clic
-    if "user_login" not in st.session_state:
-        st.session_state.user_login = ""
-    if "pass_login" not in st.session_state:
-        st.session_state.pass_login = ""
-        
-    # Inputs SIN st.form, usando keys para leer el valor directamente
-    st.text_input("👤 Usuario", value=st.session_state.user_login, placeholder="admin", key="input_user_key")
-    st.text_input("🔒 Contraseña", value=st.session_state.pass_login, type="password", placeholder="admin123", key="input_pass_key")
     
-    col1, col2 = st.columns([3, 1])
-    with col1:
-        if st.button("🔐 Ingresar", use_container_width=True, type="primary"):
-            # Leemos directamente de las keys, .strip() elimina espacios accidentales
-            u = str(st.session_state.input_user_key).strip()
-            p = str(st.session_state.input_pass_key).strip()
-            
-            if u and p:
-                user_data = verificar_login(u, p)
-                if user_data:
-                    st.session_state.logged_in = True
-                    st.session_state.user_data = user_data
-                    st.session_state.user_login = ""
-                    st.session_state.pass_login = ""
-                    st.success(f"¡Bienvenido, {user_data['nombre']}!")
-                    st.balloons()
-                    st.rerun()
-                else:
-                    st.error("❌ Usuario o contraseña incorrectos (o la BD no responde)")
+    # Inputs DIRECTOS sin st.form (esto es clave)
+    username = st.text_input("👤 Usuario", placeholder="admin", key="user_input_key")
+    password = st.text_input("🔒 Contraseña", type="password", placeholder="admin123", key="pass_input_key")
+    
+    # Botón de ingreso
+    if st.button("🔐 Ingresar", use_container_width=True, type="primary"):
+        # Leer los valores directamente de session_state
+        user_val = st.session_state.user_input_key
+        pass_val = st.session_state.pass_input_key
+        
+        if user_val and pass_val:
+            user_data = verificar_login(user_val, pass_val)
+            if user_data:
+                st.session_state.logged_in = True
+                st.session_state.user_data = user_data
+                st.success(f"¡Bienvenido, {user_data['nombre']}!")
+                st.balloons()
+                st.rerun()
             else:
-                st.warning("⚠️ Ingresa usuario y contraseña")
-                
-    with col2:
-        if st.button("🧹 Limpiar", use_container_width=True):
-            st.session_state.user_login = ""
-            st.session_state.pass_login = ""
-            st.rerun()
-            
+                st.error("❌ Usuario o contraseña incorrectos")
+        else:
+            st.warning("️ Ingresa usuario y contraseña")
+    
     st.markdown("---")
-    st.info("🔑 **Credenciales por defecto:** Usuario `admin` / Contraseña `admin123`")
+    st.info(" **Credenciales por defecto:** Usuario `admin` / Contraseña `admin123`")
 # ═══════════════════════════════════════════════════════════
 # SISTEMA PRINCIPAL
 # ═══════════════════════════════════════════════════════════
