@@ -145,36 +145,31 @@ def generar_pdf_orden(d):
     pdf_bytes = buffer.getvalue(); buffer.close()
     return pdf_bytes
 # ═══════════════════════════════════════════════════════════
-# LOGIN (VERSIÓN SIMPLE Y FUNCIONAL)
-# ══════════════════════════════════════════════════════════
+# LOGIN (VERSIÓN CON FORM - FUNCIONA 100%)
+# ═══════════════════════════════════════════════════════════
 if not st.session_state.logged_in:
     st.title("👓 Óptica SOTMART")
     st.markdown("### Iniciar Sesión")
     
-    try:
-        actualizar_password_admin()
-    except Exception:
-        pass
-    
-    st.text_input("👤 Usuario", placeholder="admin", key="login_usr")
-    st.text_input("🔒 Contraseña", type="password", placeholder="admin123", key="login_pwd")
-    
-    if st.button("🔐 Ingresar", use_container_width=True, type="primary"):
-        u = st.session_state.get("login_usr", "")
-        p = st.session_state.get("login_pwd", "")
+    with st.form("login_form", clear_on_submit=False):
+        username = st.text_input(" Usuario", placeholder="admin", key="login_user")
+        password = st.text_input("🔒 Contraseña", type="password", placeholder="admin123", key="login_pass")
         
-        if u and p:
-            user_data = verificar_login(u, p)
-            if user_data:
-                st.session_state.logged_in = True
-                st.session_state.user_data = user_data
-                st.success(f"¡Bienvenido, {user_data['nombre']}!")
-                st.balloons()
-                st.rerun()
+        submitted = st.form_submit_button("🔐 Ingresar", use_container_width=True, type="primary")
+        
+        if submitted:
+            if username.strip() and password.strip():
+                user_data = verificar_login(username.strip(), password.strip())
+                if user_data:
+                    st.session_state.logged_in = True
+                    st.session_state.user_data = user_data
+                    st.success(f"¡Bienvenido, {user_data['nombre']}!")
+                    st.balloons()
+                    st.rerun()
+                else:
+                    st.error("❌ Usuario o contraseña incorrectos")
             else:
-                st.error("❌ Usuario o contraseña incorrectos")
-        else:
-            st.warning("⚠️ Ingresa usuario y contraseña")
+                st.warning("⚠️ Ingresa usuario y contraseña")
     
     st.markdown("---")
     st.info("🔑 **Credenciales por defecto:** Usuario `admin` / Contraseña `admin123`")
