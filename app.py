@@ -145,30 +145,20 @@ def generar_pdf_orden(d):
     pdf_bytes = buffer.getvalue(); buffer.close()
     return pdf_bytes
 # ═══════════════════════════════════════════════════════════
-# LOGIN (VERSIÓN DEFINITIVA - SIN st.form)
-# ═══════════════════════════════════════════════════════════
+# LOGIN (VERSIÓN SIMPLE Y FUNCIONAL)
+# ══════════════════════════════════════════════════════════
 if not st.session_state.logged_in:
-    st.title(" Óptica SOTMART")
+    st.title("👓 Óptica SOTMART")
     st.markdown("### Iniciar Sesión")
     
-    # Intentar actualizar password si es necesario
-    try:
-        actualizar_password_admin()
-    except Exception:
-        pass
-    
-    # Inputs DIRECTOS sin st.form (esto es clave)
-    username = st.text_input("👤 Usuario", placeholder="admin", key="user_input_key")
-    password = st.text_input("🔒 Contraseña", type="password", placeholder="admin123", key="pass_input_key")
+    # Inputs simples sin form
+    username = st.text_input("👤 Usuario", placeholder="admin")
+    password = st.text_input("🔒 Contraseña", type="password", placeholder="admin123")
     
     # Botón de ingreso
     if st.button("🔐 Ingresar", use_container_width=True, type="primary"):
-        # Leer los valores directamente de session_state
-        user_val = st.session_state.user_input_key
-        pass_val = st.session_state.pass_input_key
-        
-        if user_val and pass_val:
-            user_data = verificar_login(user_val, pass_val)
+        if username.strip() and password.strip():
+            user_data = verificar_login(username.strip(), password.strip())
             if user_data:
                 st.session_state.logged_in = True
                 st.session_state.user_data = user_data
@@ -178,10 +168,10 @@ if not st.session_state.logged_in:
             else:
                 st.error("❌ Usuario o contraseña incorrectos")
         else:
-            st.warning("️ Ingresa usuario y contraseña")
+            st.warning("⚠️ Ingresa usuario y contraseña")
     
     st.markdown("---")
-    st.info(" **Credenciales por defecto:** Usuario `admin` / Contraseña `admin123`")
+    st.info("🔑 **Credenciales por defecto:** Usuario `admin` / Contraseña `admin123`")
 # ═══════════════════════════════════════════════════════════
 # SISTEMA PRINCIPAL
 # ═══════════════════════════════════════════════════════════
