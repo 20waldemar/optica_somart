@@ -151,14 +151,20 @@ if not st.session_state.logged_in:
     st.title("👓 Óptica SOTMART")
     st.markdown("### Iniciar Sesión")
     
-    # Inputs simples sin form
-    username = st.text_input("👤 Usuario", placeholder="admin")
-    password = st.text_input("🔒 Contraseña", type="password", placeholder="admin123")
+    try:
+        actualizar_password_admin()
+    except Exception:
+        pass
     
-    # Botón de ingreso
+    st.text_input("👤 Usuario", placeholder="admin", key="login_usr")
+    st.text_input("🔒 Contraseña", type="password", placeholder="admin123", key="login_pwd")
+    
     if st.button("🔐 Ingresar", use_container_width=True, type="primary"):
-        if username.strip() and password.strip():
-            user_data = verificar_login(username.strip(), password.strip())
+        u = st.session_state.get("login_usr", "")
+        p = st.session_state.get("login_pwd", "")
+        
+        if u and p:
+            user_data = verificar_login(u, p)
             if user_data:
                 st.session_state.logged_in = True
                 st.session_state.user_data = user_data
